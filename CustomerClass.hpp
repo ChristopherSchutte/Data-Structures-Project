@@ -64,6 +64,4 @@ class VIP_Tracker
         Product* newProduct(std::string product_name, std::string catagory, std::string color, std::string date_purchased, Product* next);
         Customer* newCustomer(std::string email, std::string address, std::string customer_name, std::string birthday, Customer* next);
     
-    //node* createNode(int key, node* next);
-    
 };
