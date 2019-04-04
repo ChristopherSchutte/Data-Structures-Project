@@ -43,6 +43,8 @@ class VIP_Tracker
     
         Product* searchProducts(std::string name, std::string catagory); //searches hash table for specific product
         Customer* searchCustomer(std::string email, std::string name); //searches hash for specific person
+        void removeCustomer(Customer *Customer); //remove a person from the database
+        void removeProduct(Product *Product); //removes a product from the database
     
         void allCustomers(); //Prints all customers
         void specifcCust(Customer* customer); //Prints the specifics of a certain customer
