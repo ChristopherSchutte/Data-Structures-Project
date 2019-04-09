@@ -6,13 +6,12 @@
 //  Copyright © 2019 Christopher Schutte & Logan Mann. All rights reserved.
 //
 
-#ifndef CustomerClass_hpp
-#define CustomerClass_hpp
+#ifndef CUSTOMER_CLASS_HPP
+#define CUSTOMER_CLASS_HPP
 
 #include <stdio.h>
 #include <iostream>
 
-#endif /* CustomerClass_hpp */
 
 
 struct Product
@@ -38,8 +37,8 @@ class VIP_Tracker
         VIP_Tracker(int tablesize); //constructor
         ~VIP_Tracker(); //destructor
     
-        unsigned int HashCustomer(int email); //takes in the int version of the email string to be hashed
-        unsigned int HashProduct(int catagory); //takes in the int verson of the catagory string to be hashed
+        unsigned int HashCustomer(std::string email); //takes in the int version of the email string to be hashed
+        unsigned int HashProduct(std:: catagory); //takes in the int verson of the catagory string to be hashed
     
         Product* searchProducts(std::string name, std::string catagory); //searches hash table for specific product
         Customer* searchCustomer(std::string email, std::string name); //searches hash for specific person
@@ -65,3 +64,5 @@ class VIP_Tracker
         Customer* newCustomer(std::string email, std::string address, std::string customer_name, std::string birthday, Customer* next);
     
 };
+
+#endif CUSTOMER_CLASS_HPP
