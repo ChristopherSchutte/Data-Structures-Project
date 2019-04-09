@@ -38,7 +38,7 @@ class VIP_Tracker
         ~VIP_Tracker(); //destructor
     
         unsigned int HashCustomer(std::string email); //takes in the int version of the email string to be hashed
-        unsigned int HashProduct(std:: catagory); //takes in the int verson of the catagory string to be hashed
+        unsigned int HashProduct(std::string catagory); //takes in the int verson of the catagory string to be hashed
     
         Product* searchProducts(std::string name, std::string catagory); //searches hash table for specific product
         Customer* searchCustomer(std::string email, std::string name); //searches hash for specific person
