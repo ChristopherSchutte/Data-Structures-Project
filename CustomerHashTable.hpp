@@ -3,6 +3,14 @@
 
 #include <iostream>
 
+struct Product
+{
+    std::string product_name, catagory, color, date_purchased; //product info
+    int num_purchased; //number of specific product purchased
+    
+    Product *previous, *next; //linked list
+};
+
 struct Customer
 {
     std::string email, address, customer_name, birthday; //customer information
