@@ -65,4 +65,4 @@ class VIP_Tracker
     
 };
 
-#endif CUSTOMER_CLASS_HPP
+#endif /* CUSTOMER_CLASS_HPP */
