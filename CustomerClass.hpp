@@ -13,6 +13,7 @@
 #include <iostream>
 
 
+//THIS PRODUCT STRUCT HOLDS THE DATA OF THAT PRODUCT FOR A SINGLE CUSTOMER
 
 struct Product
 {
