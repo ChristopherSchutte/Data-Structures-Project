@@ -60,8 +60,12 @@ class VIP_Tracker
         int tablesize;
         Product* *all_products; //hash table for all products
         Customer* *all_customers; //hash table for logged customers
+        /*
+        dont think these vars are neccessary
+        
         Product* newProduct(std::string product_name, std::string catagory, std::string color, std::string date_purchased, Product* next);
         Customer* newCustomer(std::string email, std::string address, std::string customer_name, std::string birthday, Customer* next);
+        */
     
 };
 
