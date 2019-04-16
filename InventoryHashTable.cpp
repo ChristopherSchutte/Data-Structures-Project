@@ -8,25 +8,60 @@
 //Product* *purchased_products;
 
 
-Inventory::Inventory(int I_tablesize)
+Inventory::Inventory(int Catagory)
 {
-    this->I_tablesize = tablesize;
     this->numCatagorys = Catagory;
     
-    all_products = new Product *[I_tablesize];
+    all_products = new Product *[numCatagorys];
     purchased_products = new Product *[numCatagorys];
     
-    for(int i = 0; i < I_tablesize; i++) all_products[i] = NULL;
+    for(int i = 0; i < numCatagorys; i++) all_products[i] = NULL;
     for(int j = 0; j < numCatagorys; j++) purchased_products[j] = NULL;
-    
 }
+
 Inventory::~Inventory()
 {
+    for(int i = 0; i < numCatagorys; i++)
+    {
+        Product *temp = new Product;
+        temp[i] = *purchased_products[i];
+        
+        while(temp != NULL)
+        {
+            Product *del = new Product;
+            del = temp;
+            temp = temp->next;
+            delete del;
+        }
+        
+        temp[i] = *all_products[i];
+        
+        while(temp != NULL)
+        {
+            Product *del = new Product;
+            del = temp;
+            temp = temp->next;
+            delete del;
+        }
+        
+        delete temp;
+    }
     
+    delete purchased_products;
+    delete all_products;
 }
+
 unsigned int Inventory::HashProduct(int catagory)
 {
+    unsigned int hashValue = 5381;
     
+    for(int i = 0; i < catagory; i++)
+    {
+        hashValue = ((hashValue << 5) + hashValue) + catagory;
+    }
+    
+    hashValue %= numCatagorys;
+    return hashValue;
 }
 
 Product *Inventory::search_purchased(std::string product_name, std::string catagory)
