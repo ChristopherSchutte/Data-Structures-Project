@@ -51,16 +51,16 @@ Inventory::~Inventory()
     delete all_products;
 }
 
-unsigned int Inventory::HashProduct(int catagory)
+unsigned int Inventory::HashProduct(std::string catagory)
 {
     unsigned int hashValue = 5381;
     
-    for(int i = 0; i < catagory; i++)
+    for(int i = 0; i < icatagory; i++)
     {
-        hashValue = ((hashValue << 5) + hashValue) + catagory;
+        hashValue = ((hashValue << 5) + hashValue) + icatagory;
     }
     
-    hashValue %= numCatagorys;
+    hashValue %= numCategories;
     return hashValue;
 }
 
