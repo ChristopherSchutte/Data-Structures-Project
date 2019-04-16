@@ -34,6 +34,8 @@ struct Customer
 
 class VIP_Tracker
 {
+    
+    //IMPORTANT: WHEN IMPLEMENTING A DRIVER FUNCTION TO ADD A PURCHASE FOR A CUSTOMER, MUST VERIFY THAT THE PRODUCT EXISTS IN INVENTORY;
     public:
         VIP_Tracker(int tablesize); //constructor
         ~VIP_Tracker(); //destructor
