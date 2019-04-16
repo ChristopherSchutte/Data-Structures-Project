@@ -24,7 +24,7 @@ Inventory::~Inventory()
     for(int i = 0; i < numCatagorys; i++)
     {
         Product *temp = new Product;
-        temp[i] = *purchased_products[i];
+        temp = purchased_products[i];
         
         while(temp != NULL)
         {
@@ -66,11 +66,44 @@ unsigned int Inventory::HashProduct(int catagory)
 
 Product *Inventory::search_purchased(std::string product_name, std::string catagory)
 {
+    int catagoryInt = stoi(catagory);
+    int hash = HashProduct(catagoryInt);
     
+    if(purchased_products[hash] != NULL)
+    {
+        Product *temp = new Product;
+        temp = purchased_products[hash];
+        
+        while(temp != NULL)
+        {
+            if(temp->product_name.compare(product_name) == 0) return temp;
+            
+            else temp = temp->next;
+        }
+    }
+    
+    return NULL;
 }
+
 Product *Inventory::search_allProducts(std::string product_name, std::string catagory)
 {
+    int catagoryInt = stoi(catagory);
+    int hash = HashProduct(catagoryInt);
     
+    if(all_products[hash] != NULL)
+    {
+        Product *temp = new Product;
+        temp = all_products[hash];
+        
+        while(temp != NULL)
+        {
+            if(temp->product_name.compare(product_name) == 0) return temp;
+            
+            else temp = temp->next;
+        }
+    }
+    
+    return NULL;
 }
 
 void Inventory::print_purchased()
