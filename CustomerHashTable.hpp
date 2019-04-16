@@ -31,6 +31,8 @@ class CustomerHashTable
     void addCustomer(std::string email, std::string address, std::string customer_name, std::string birthday);
     //removes a customer from the hash table
     void removeCustomer(std::string email);
+    //adds a purchase for the customer with the email passed
+    void addPurchase(std::string custEmail, std::string productName, std::string catagory, std::string color, std::string date_purchased);
     //searches the hash table for a specific customer, returns pointer to that customer
     Customer* searchCustomer(std::string email);
   private:
