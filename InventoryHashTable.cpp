@@ -10,7 +10,14 @@
 
 Inventory::Inventory(int I_tablesize)
 {
-    this->I_tablesize = I_tablesize;
+    this->I_tablesize = tablesize;
+    this->numCatagorys = Catagory;
+    
+    all_products = new Product *[I_tablesize];
+    purchased_products = new Product *[numCatagorys];
+    
+    for(int i = 0; i < I_tablesize; i++) all_products[i] = NULL;
+    for(int j = 0; j < numCatagorys; j++) purchased_products[j] = NULL;
     
 }
 Inventory::~Inventory()
