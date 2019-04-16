@@ -34,7 +34,7 @@ class CustomerHashTable
     //adds a purchase for the customer with the email passed
     void addPurchase(std::string std::string productName);
     //searches the hash table for a specific customer, returns pointer to that customer
-    Customer* searchCustomer(std::string email, std::string name);
+    Customer* searchCustomer(std::string email);
   private:
     //hashes customer email passed
     unsigned int hashCust(std::string email);
