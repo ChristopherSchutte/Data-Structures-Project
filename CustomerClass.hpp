@@ -37,21 +37,12 @@ class VIP_Tracker
     
     //IMPORTANT: WHEN IMPLEMENTING A DRIVER FUNCTION TO ADD A PURCHASE FOR A CUSTOMER, MUST VERIFY THAT THE PRODUCT EXISTS IN INVENTORY;
     public:
-        VIP_Tracker(int tablesize); //constructor
+         VIP_Tracker(int custTablesize, int prodTableSize); //constructor
         ~VIP_Tracker(); //destructor
-    
-        unsigned int HashCustomer(std::string email); //takes in the int version of the email string to be hashed
-        unsigned int HashProduct(std::string catagory); //takes in the int verson of the catagory string to be hashed
-    
-        Product* searchProducts(std::string name, std::string catagory); //searches hash table for specific product
-        Customer* searchCustomer(std::string email, std::string name); //searches hash for specific person
-        void removeCustomer(Customer *Customer); //remove a person from the database
-        void removeProduct(Product *Product); //removes a product from the database
     
         void allCustomers(); //Prints all customers
         void specifcCust(Customer* customer); //Prints the specifics of a certain customer
-        void cusomerAnalytics(Customer* customer);
-        void mostBoughtItems(Customer* customer); //Prints the most bought items by item name
+        void mostBoughtItems(Customer* customer); //Prints the most bought items by item name for a customer
         void mostBoughtCatagory(Customer* customer); //Prints most bought from catagory
         void numberProductsOwned(Customer* customer); //Prints number of products owned by customer
         void mostPopularItems(Product* product); //Prints the 5 most bought products
@@ -60,7 +51,8 @@ class VIP_Tracker
         void reccLikeProdcut(Customer* customer); //reccomends a product in the same catagory as the most bought
     
     private:
-        int tablesize;
+        int customerTablesize;
+        int productTablesize;
         Product* *all_products; //hash table for all products
         Customer* *all_customers; //hash table for logged customers
         /*
