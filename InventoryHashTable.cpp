@@ -1,5 +1,6 @@
 #include "InventoryHashTable.hpp"
 #include <iostream>
+#include <cmath>
 
 //implement member functions of the InventoryHashTable class here
 
@@ -12,18 +13,16 @@ Inventory::Inventory(int Catagory)
 {
     this->numCatagorys = Catagory;
     
-    all_products = new InventoryProduct *[numCatagorys];
-    purchased_products = new InventoryProduct *[numCatagorys];
+    fullInventory = new InventoryProduct *[numCatagorys];
     
-    for(int i = 0; i < numCatagorys; i++) all_products[i] = NULL;
-    for(int j = 0; j < numCatagorys; j++) purchased_products[j] = NULL;
+    for(int i = 0; i < numCatagorys; i++) fullInventory[i] = NULL;
 }
 
 Inventory::~Inventory()
 {
     for(int i = 0; i < numCatagorys; i++)
     {
-        InventoryProduct *temp = purchased_products[i];
+        InventoryProduct *temp = fullInventory[i];
         
         while(temp != NULL)
         {
@@ -31,21 +30,9 @@ Inventory::~Inventory()
             temp = temp->next;
             delete del;
         }
-        
-        temp = all_products[i];
-        
-        while(temp != NULL)
-        {
-            InventoryProduct *del = temp;
-            temp = temp->next;
-            delete del;
-        }
-        
         delete temp;
     }
-    
-    delete purchased_products;
-    delete all_products;
+    delete fullInventory;
 }
 
 int turnIntoInt(std::string convrtString)
@@ -54,7 +41,7 @@ int turnIntoInt(std::string convrtString)
     
     for(int i = 0; i < convrtString.length(); i++)
     {
-        sum = sum + (std::pow(convrtString[i], i));
+        sum = sum + (convrtString[i] * convrtString.length());
     }
     
     return sum;
@@ -75,39 +62,16 @@ unsigned int Inventory::HashProduct(std::string catagory)
     return hashValue;
 }
 
-InventoryProduct *Inventory::search_purchased(std::string product_name, std::string catagory)
+InventoryProduct *Inventory::searchInventory(std::string product_name, std::string catagory, std::string color, std::string size)
 {
     int hash = HashProduct(catagory);
     
-    if(purchased_products[hash] != NULL)
-    {
-        InventoryProduct *temp = purchased_products[hash];
-        
-        while(temp != NULL)
-        {
-            if(temp->product_name.compare(product_name) == 0) return temp;
-            
-            else temp = temp->next;
-        }
-    }
+    InventoryProduct *temp = fullInventory[hash];
     
-    return NULL;
-}
-
-InventoryProduct *Inventory::search_allProducts(std::string product_name, std::string catagory)
-{
-    int hash = HashProduct(catagory);
-    
-    if(all_products[hash] != NULL)
+    while(temp != NULL)
     {
-        InventoryProduct *temp = all_products[hash];
-        
-        while(temp != NULL)
-        {
-            if(temp->product_name.compare(product_name) == 0) return temp;
-            
-            else temp = temp->next;
-        }
+        if(temp->product_name.compare(product_name) == 0) if(temp->color.compare(color) == 0) if(temp->size.compare(size) == 0) return temp;
+        temp = temp->next;
     }
     
     return NULL;
@@ -117,17 +81,21 @@ void Inventory::print_purchased()
 {
     for(int i = 0; i < numCatagorys; i++)
     {
-        if(purchased_products[i] != NULL)
+        if(fullInventory[i] != NULL)
         {
-            std::cout << "Product Catagory: " << purchased_products[i]->catagory << std::endl << std::endl;
+            std::cout << "Product Catagory: " << fullInventory[i]->catagory << std::endl << std::endl;
             
-            InventoryProduct *temp = purchased_products[i];
+            InventoryProduct *temp = fullInventory[i];
             
             while(temp != NULL)
             {
-                std::cout << "Product Name: " << temp->product_name << std::endl;
-                std::cout << "  Color: " << temp->color << std::endl;
-                std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
+                if(temp->num_purchased != 0)
+                {
+                    std::cout << "Product Name: " << temp->product_name << std::endl;
+                    std::cout << "  Color: " << temp->color << std::endl;
+                    std::cout << "  Size: " << temp->size << std::endl;
+                    std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
+                }
                 
                 temp = temp->next;
             }
@@ -139,16 +107,18 @@ void Inventory::print_allProducts()
 {
     for(int i = 0; i < numCatagorys; i++)
     {
-        if(all_products[i] != NULL)
+        if(fullInventory[i] != NULL)
         {
-            std::cout << "Product Catagory: " << all_products[i]->catagory << std::endl << std::endl;
+            std::cout << "Product Catagory: " << fullInventory[i]->catagory << std::endl << std::endl;
             
-            InventoryProduct *temp = all_products[i];
+            InventoryProduct *temp = fullInventory[i];
             
             while(temp != NULL)
             {
                 std::cout << "Product Name: " << temp->product_name << std::endl;
                 std::cout << "  Color: " << temp->color << std::endl;
+                std::cout << "  Size: " << temp->size << std::endl;
+                std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
                 
                 temp = temp->next;
             }
@@ -156,43 +126,48 @@ void Inventory::print_allProducts()
     }
 }
 
-void Inventory::print_numPurchased(std::string product_name, std::string catagory)
+void Inventory::print_numPurchased(std::string product_name, std::string catagory, std::string color, std::string size)
 {
-    InventoryProduct *temp = search_purchased(product_name, catagory);
-    int numberBought = 0;
+    InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
     if(temp != NULL)
     {
-        std::cout << "Purchase Information for the " << product_name << ":" << std::endl;
-        
-        while(temp != NULL)
-        {
-            if(temp->product_name.compare(product_name) == 0)
-            {
-                std::cout << "  Number Sold in " << temp->color << ": " << temp->num_purchased;
-                numberBought = numberBought + temp->num_purchased;
-            }
-            
-            temp = temp->next;
-        }
-        
-        std::cout << std::endl << "Total Number Bought: " << numberBought << std::endl;
-        
-        return;
+        std::cout << "Number of: " << product_name << " in " << color << " size " << size << ": " << temp->num_purchased << std::endl;
     }
     
-    else
-    {
-        std::cout << "Product not found in database..." << std::endl;
-        return;
-    }
+    else std::cout << "Product not found..." << std::endl;
+    
 }
 
-bool Inventory::addProduct(std::string product_name, std::string catagory, std::string color, Product* next)
+bool Inventory::addProduct(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next)
 {
+    InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
+    if(temp == NULL)
+    {
+        int hash = HashProduct(catagory);
+        
+        InventoryProduct *currenthead = fullInventory[hash];
+        InventoryProduct *newNode = NULL;
+        newNode->product_name = product_name;
+        newNode->catagory = catagory;
+        newNode->color = color;
+        newNode->size = size;
+        
+        fullInventory[hash] = newNode;
+        newNode->next = currenthead;
+        
+        return true;
+    }
+    
+    return false;
 }
-bool Inventory::addPurchasedProduct(std::string product_name, std::string catagory, std::string color, std::string date_purchased, Product* next)
+
+void Inventory::addPurchse(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next)
 {
+    InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
+    if(temp != NULL) temp->num_purchased++;
+    
+    else std::cout << "Cannot add purcahse because product is not in the database..." << std::endl;
 }
