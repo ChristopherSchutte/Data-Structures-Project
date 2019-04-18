@@ -15,19 +15,18 @@ class Inventory //Possibly make one inventory
     private:
     int numCatagorys;
     InventoryProduct* *fullInventory;
+    InventoryProduct *searchInventory(std::string product_name, std::string catagory, std::string color, std::string size);
     
     public:
     Inventory(int Catagorys);
     ~Inventory();
     unsigned int HashProduct(std::string catagory);
     
-    InventoryProduct *searchInventory(std::string product_name, std::string catagory, std::string color, std::string size);
-    
     void print_purchased();
     void print_allProducts();
     
     void print_numPurchased(std::string product_name, std::string catagory, std::string color, std::string size);
     
-    bool addProduct(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next);
-    bool addPurchasedProduct(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next);
+    bool addProduct(std::string product_name, std::string catagory, std::string color, std::string size);
+    void addPurchse(std::string product_name, std::string catagory, std::string color, std::string size);
 };
