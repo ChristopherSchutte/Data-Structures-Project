@@ -31,7 +31,7 @@ CustomerHashTable::~CustomerHashTable()
 
 int stringToInt(std::string str)
 {
-  int sum;
+  int sum = 0;
   for (int i = 0; i < str.length(); i++)
   {
     sum = sum + (str[i] * i);
@@ -47,7 +47,7 @@ unsigned int CustomerHashTable::hashCust(std::string email)
     {
         hashValue = ((hashValue << 5) + hashValue) + emailInt;
     }
-    return hashValue % tablesize;
+    return (hashValue % tablesize);
 }
 
 void CustomerHashTable::addCustomer(std::string email, std::string address, std::string customer_name, std::string birthday)
@@ -58,11 +58,6 @@ void CustomerHashTable::addCustomer(std::string email, std::string address, std:
     return;
   }
   int index = hashCust(email);
-  if (index < 0 || index > tablesize-1)
-  {
-    std::cout << "hash failed" <<std::endl;
-    return;
-  }
   Customer* newCust = new Customer;
   newCust->customer_name = customer_name;
   newCust->email = email;
@@ -93,14 +88,16 @@ void CustomerHashTable::removeCustomer(std::string delEmail)
     temp = all_Customers[index];
     all_Customers[index] = all_Customers[index]->next;
     delete temp;
+    return;
   }
-  while (pres != NULL)
+  if (pres != NULL)
   {
-    if (pres->email != delEmail)
+    while (pres->email != delEmail)
     {
       temp = pres;
       pres = pres->next;
     }
+
   }
   temp->next = pres->next;
   delete pres;
@@ -153,8 +150,12 @@ Customer* CustomerHashTable::searchCustomer(std::string findEmail)
 {
   int index = hashCust(findEmail);
   Customer* pres = all_Customers[index];
-  while (pres != NULL && pres->email != findEmail)
+  while (pres != NULL)
   {
+    if (pres->email == findEmail)
+    {
+      return pres;
+    }
     pres = pres->next;
   }
   return pres;
