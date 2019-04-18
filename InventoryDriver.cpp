@@ -24,6 +24,8 @@ int main()
     std::cout << "Please enter file name for the inventory list:";
     getline(std::cin, filename);
     
+    std::cout << std::endl;
+    
     std::ifstream InventoryFile;
     InventoryFile.open(filename);
     
@@ -31,35 +33,39 @@ int main()
     {
         while(getline(InventoryFile, temp))
         {
-            for(int i= 0 ; i < 3; i++)
+            if(temp.length() > 5)
             {
-                comma = temp.find(',');
+                for(int i= 0 ; i < 3; i++)
+                {
+                    comma = temp.find(',');
+                    
+                    if(i == 0) catagory = temp.substr(0, comma);
+                    if(i == 1) product_name = temp.substr(0, comma);
+                    if(i == 2) color = temp.substr(0, comma);
+                    
+                    temp = temp.substr(comma + 1);
+                }
+                size = temp;
                 
-                if(i == 0) catagory = temp.substr(0, comma);
-                if(i == 1) product_name = temp.substr(0, comma);
-                if(i == 2) color = temp.substr(0, comma);
+                std::cout << "Adding " << product_name << " in " << color << " size " << size;
                 
-                temp = temp.substr(comma + 1);
+                added = I.addProduct(product_name, catagory, color, size);
+                
+                if(added == true) std::cout << "Added to database..." << std::endl << std::endl;
+                else std::cout << "ERROR adding to database..." << std::endl;
             }
-            size = temp;
-            
-            added = I.addProduct(product_name, catagory, color, size);
-            
-            if(added == true) std::cout << product_name << " in " << color << " size " << size << " added to database..." << std::endl;
-            else std::cout << "Product could not be added to database..." << std::endl;
         }
         
         InventoryFile.close();
         
-        std::cout << std::endl << "Testing print_allProducts..." << std::endl;
-        I.print_allProducts();
-        
         std::cout << std::endl << "Adding some purchases..." << std::endl;
-        I.addPurchse("Greenland Down No. 1", "Mid-Weight Jacket’s", "Black", "S");
-        I.addPurchse("Greenland Down No. 1", "Mid-Weight Jacket’s", "Dusk", "M");
-        I.addPurchse("Keb Eco-Shell", "Eco-Shell Jacket’s", "Black", "L");
-        I.addPurchse("Keb Eco-Shell", "Eco-Shell Jacket’s", "Acorn", "L");
-        I.addPurchse("Lhasa", "Boots", "Brown", "10");
+        //Eco-Shell Jacket's,Keb Eco-Shell,Acorn,L
+        product_name = "Keb Eco-Shell";
+        catagory = "Eco-Shell Jacket's";
+        color = "Acorn";
+        size = "L";
+        
+        I.addPurchse(product_name, catagory, color, size);
         
         std::cout << std::endl << "Testing print_purchased..." << std::endl;
         I.print_purchased();
