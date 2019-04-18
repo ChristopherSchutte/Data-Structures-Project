@@ -33,12 +33,12 @@ Inventory::~Inventory()
         }
         delete temp;
     }
-    delete fullInventory;
+    delete [] fullInventory;
 }
 
 int turnIntoInt(std::string convrtString)
 {
-    int sum;
+    int sum = 0;
     
     for(int i = 0; i < convrtString.length(); i++)
     {
@@ -79,9 +79,7 @@ InventoryProduct *Inventory::searchInventory(std::string product_name, std::stri
                 {
                     return temp;
                 }
-                
             }
-            
         }
         temp = temp->next;
     }
@@ -127,7 +125,7 @@ void Inventory::print_allProducts()
             
             while(temp != NULL)
             {
-                std::cout << "Product Name: " << temp->product_name << std::endl;
+                std::cout << "  Product Name: " << temp->product_name << std::endl;
                 std::cout << "  Color: " << temp->color << std::endl;
                 std::cout << "  Size: " << temp->size << std::endl;
                 std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
@@ -160,14 +158,15 @@ bool Inventory::addProduct(std::string product_name, std::string catagory, std::
         int hash = HashProduct(catagory);
         
         InventoryProduct *currenthead = fullInventory[hash];
-        InventoryProduct newNode;
-        newNode.product_name = product_name;
-        newNode.catagory = catagory;
-        newNode.color = color;
-        newNode.size = size;
+        InventoryProduct *newNode = new InventoryProduct;
+        newNode->product_name = product_name;
+        newNode->catagory = catagory;
+        newNode->color = color;
+        newNode->size = size;
+        newNode->num_purchased = 0;
         
-        fullInventory[hash] = &newNode;
-        newNode.next = currenthead;
+        fullInventory[hash] = newNode;
+        newNode->next = currenthead;
         
         return true;
     }
@@ -179,7 +178,11 @@ void Inventory::addPurchse(std::string product_name, std::string catagory, std::
 {
     InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
-    if(temp != NULL) temp->num_purchased++;
+    if(temp != NULL)
+    {
+        temp->num_purchased++;
+        return;
+    }
     
     else std::cout << "Cannot add purcahse because product is not in the database..." << std::endl;
 }
