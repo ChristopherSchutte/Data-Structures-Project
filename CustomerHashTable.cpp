@@ -1,11 +1,15 @@
 #include "CustomerHashTable.hpp"
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
-CustomerHashTable::CustomerHashTable(int tablesize)
+CustomerHashTable::CustomerHashTable(int newTablesize)
 {
-  tablesize = tablesize;
-  all_Customers = new Customer*[tablesize];
+  tablesize = newTablesize;
+  all_Customers = new Customer*[newTablesize];
+  for (int i = 0; i < tablesize; i++)
+  {
+    all_Customers[i] = NULL;
+  }
 }
 
 CustomerHashTable::~CustomerHashTable()
@@ -30,22 +34,20 @@ int stringToInt(std::string str)
   int sum;
   for (int i = 0; i < str.length(); i++)
   {
-    sum = sum + (std::pow(str[i],i));
+    sum = sum + (str[i] * i);
   }
   return sum;
 }
 
-unsigned int Inventory::hashCust(std::string email)
+unsigned int CustomerHashTable::hashCust(std::string email)
 {
     unsigned int hashValue = 5381;
-    int emailInt = stringToInt(email;
+    int emailInt = stringToInt(email);
     for(int i = 0; i < emailInt; i++)
     {
         hashValue = ((hashValue << 5) + hashValue) + emailInt;
     }
-
-    hashValue %= tablesize;
-    return hashValue;
+    return hashValue % tablesize;
 }
 
 void CustomerHashTable::addCustomer(std::string email, std::string address, std::string customer_name, std::string birthday)
@@ -55,8 +57,12 @@ void CustomerHashTable::addCustomer(std::string email, std::string address, std:
     std::cout << "Customer with email: " << email << " is already in the database." << std::endl;
     return;
   }
-
   int index = hashCust(email);
+  if (index < 0 || index > tablesize-1)
+  {
+    std::cout << "hash failed" <<std::endl;
+    return;
+  }
   Customer* newCust = new Customer;
   newCust->customer_name = customer_name;
   newCust->email = email;
@@ -68,8 +74,8 @@ void CustomerHashTable::addCustomer(std::string email, std::string address, std:
   newCust->next = NULL;
 
 
-  newCust->next = all_Customers[i];
-  all_Customers[i] = newCust;
+  newCust->next = all_Customers[index];
+  all_Customers[index] = newCust;
 }
 
 void CustomerHashTable::removeCustomer(std::string delEmail)
@@ -102,12 +108,16 @@ void CustomerHashTable::removeCustomer(std::string delEmail)
 
 Product* findProductInPurchased(Customer* customer, std::string productName)
 {
-  pres = customer->purchased_head;
-  while (pres->product_name != productName && pres != NULL)
+  Product* pres = customer->purchased_head;
+  if (pres != NULL)
   {
-    pres = pres->next;
+    while (pres->product_name != productName)
+    {
+      pres = pres->next;
+    }
   }
-  return (pres == NULL);
+
+  return pres;
 }
 
 void CustomerHashTable::addPurchase(std::string custEmail, std::string productName, std::string catagory, std::string color, std::string date_purchased)
@@ -127,6 +137,7 @@ void CustomerHashTable::addPurchase(std::string custEmail, std::string productNa
     newProduct->color = color;
     newProduct->date_purchased = date_purchased;
     newProduct->next = customer->purchased_head;
+    newProduct->num_purchased = 1;
     customer->purchased_head = newProduct;
     return;
   }
