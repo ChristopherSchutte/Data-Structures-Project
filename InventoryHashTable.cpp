@@ -1,6 +1,7 @@
 #include "InventoryHashTable.hpp"
 #include <iostream>
 #include <cmath>
+#include <string>
 
 //implement member functions of the InventoryHashTable class here
 
@@ -70,7 +71,18 @@ InventoryProduct *Inventory::searchInventory(std::string product_name, std::stri
     
     while(temp != NULL)
     {
-        if(temp->product_name.compare(product_name) == 0) if(temp->color.compare(color) == 0) if(temp->size.compare(size) == 0) return temp;
+        if(temp->product_name.compare(product_name) == 0)
+        {
+            if(temp->color.compare(color) == 0)
+            {
+                if(temp->size.compare(size) == 0)
+                {
+                    return temp;
+                }
+                
+            }
+            
+        }
         temp = temp->next;
     }
     
@@ -139,7 +151,7 @@ void Inventory::print_numPurchased(std::string product_name, std::string catagor
     
 }
 
-bool Inventory::addProduct(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next)
+bool Inventory::addProduct(std::string product_name, std::string catagory, std::string color, std::string size)
 {
     InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
@@ -148,14 +160,14 @@ bool Inventory::addProduct(std::string product_name, std::string catagory, std::
         int hash = HashProduct(catagory);
         
         InventoryProduct *currenthead = fullInventory[hash];
-        InventoryProduct *newNode = NULL;
-        newNode->product_name = product_name;
-        newNode->catagory = catagory;
-        newNode->color = color;
-        newNode->size = size;
+        InventoryProduct newNode;
+        newNode.product_name = product_name;
+        newNode.catagory = catagory;
+        newNode.color = color;
+        newNode.size = size;
         
-        fullInventory[hash] = newNode;
-        newNode->next = currenthead;
+        fullInventory[hash] = &newNode;
+        newNode.next = currenthead;
         
         return true;
     }
@@ -163,7 +175,7 @@ bool Inventory::addProduct(std::string product_name, std::string catagory, std::
     return false;
 }
 
-void Inventory::addPurchse(std::string product_name, std::string catagory, std::string color, std::string size, InventoryProduct* next)
+void Inventory::addPurchse(std::string product_name, std::string catagory, std::string color, std::string size)
 {
     InventoryProduct *temp = searchInventory(product_name, catagory, color, size);
     
