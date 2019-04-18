@@ -83,7 +83,6 @@ InventoryProduct *Inventory::searchInventory(std::string product_name, std::stri
         }
         temp = temp->next;
     }
-    
     return NULL;
 }
 
@@ -93,7 +92,7 @@ void Inventory::print_purchased()
     {
         if(fullInventory[i] != NULL)
         {
-            std::cout << "Product Catagory: " << fullInventory[i]->catagory << std::endl << std::endl;
+            std::cout << "*** Product Catagory: " << fullInventory[i]->catagory << " ***" << std::endl << std::endl;
             
             InventoryProduct *temp = fullInventory[i];
             
@@ -103,8 +102,8 @@ void Inventory::print_purchased()
                 {
                     std::cout << "Product Name: " << temp->product_name << std::endl;
                     std::cout << "  Color: " << temp->color << std::endl;
-                    std::cout << "  Size: " << temp->size << std::endl;
-                    std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
+                    std::cout << "  Size: " << temp->size;
+                    std::cout << "  Number Purchased: " << temp->num_purchased << std::endl << std::endl;
                 }
                 
                 temp = temp->next;
@@ -119,16 +118,16 @@ void Inventory::print_allProducts()
     {
         if(fullInventory[i] != NULL)
         {
-            std::cout << "Product Catagory: " << fullInventory[i]->catagory << std::endl << std::endl;
+            std::cout << "*** Product Catagory: " << fullInventory[i]->catagory << " ***" << std::endl << std::endl;
             
             InventoryProduct *temp = fullInventory[i];
             
             while(temp != NULL)
             {
-                std::cout << "  Product Name: " << temp->product_name << std::endl;
+                std::cout << "Product Name: " << temp->product_name << std::endl;
                 std::cout << "  Color: " << temp->color << std::endl;
-                std::cout << "  Size: " << temp->size << std::endl;
-                std::cout << "  Number Purchased: " << temp->num_purchased << std::endl;
+                std::cout << "  Size: " << temp->size;
+                std::cout << "  Number Purchased: " << temp->num_purchased << std::endl << std::endl;
                 
                 temp = temp->next;
             }
@@ -181,7 +180,6 @@ void Inventory::addPurchse(std::string product_name, std::string catagory, std::
     if(temp != NULL)
     {
         temp->num_purchased++;
-        return;
     }
     
     else std::cout << "Cannot add purcahse because product is not in the database..." << std::endl;
